@@ -135,6 +135,11 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 .cover .cstage{position:absolute;left:50%;top:50%;width:calc(var(--u)*1920);height:calc(var(--u)*1080);translate:-50% -50%}
 .cover .mast{position:absolute;z-index:1;left:0;right:0;top:calc(var(--u)*70);text-align:center;white-space:nowrap;font:900 calc(var(--u)*300)/.8 var(--cond);letter-spacing:-.012em;text-transform:uppercase}
 .cover .mast span{display:block}
+/* слово поднимается из-под маски построчно: чистая CSS-анимация, без JS и clip-path */
+.cover .mast .ln{overflow:hidden;padding:.12em 0 .06em;margin:-.12em 0 -.06em}
+.cover .mast .ln>i{display:block;font-style:normal;animation:mastUp 1.15s var(--ease) .1s both}
+.cover .mast .ln:nth-child(2)>i{animation-delay:.24s}
+@keyframes mastUp{from{transform:translateY(105%)}to{transform:none}}
 .cover .sub{position:absolute;z-index:3;right:calc(var(--u)*80);top:calc(var(--u)*566);font:900 calc(var(--u)*50)/1 var(--cond);text-transform:uppercase;letter-spacing:.01em;text-align:right}
 .cover .fig{position:absolute;z-index:2;left:50%;bottom:0;height:calc(var(--u)*820);width:auto;translate:-50% 0;display:block;max-width:none}
 .cover .left,.cover .right{position:absolute;z-index:3;bottom:calc(var(--u)*50)}
@@ -342,7 +347,7 @@ a:hover .play{transform:scale(1.08)}
 <header class="cover" id="top" data-num="01" data-title="Обложка">
 <div class="strip"><span>@lugovoy.vitaliy</span><span>Запуски онлайн-школ · Москва</span></div>
 <div class="cstage">
-<h1 class="mast" data-a="mast" style="--d:0s"><span>Коммерческое</span><span>предложение</span></h1>
+<h1 class="mast"><span class="ln"><i>Коммерческое</i></span><span class="ln"><i>предложение</i></span></h1>
 <p class="sub" data-a="up" style="--d:0.35s">по запускам от Виталия Лугового</p>
 <img class="fig" src="assets/img/portrait.png" width="541" height="950" alt="Виталий Луговой" data-a="z" style="--d:0.25s">
 <div class="left">
@@ -612,7 +617,6 @@ a:hover .play{transform:scale(1.08)}
   <div class="card" data-a="up" style="--d:0.3s"><small>04</small><h3>План</h3><p>Составляем общий план прогрева.</p></div>
 </div></section>
 <section class="sec final" id="contact" data-num="21" data-title="Контакты" style="--gx:30%;--gy:70%"><div class="folio"><span><b>21</b> · Контакты</span><span>Коммерческое предложение</span></div>
-<div class="ph" aria-hidden="true"><img src="assets/img/p48_X141.jpg" width="547" height="309" alt="" loading="lazy" decoding="async"></div>
 <div class="fin">
   <div class="kicker"><b>Контакты</b></div>
   <div style="margin-top:14px"><h2 class="hd l"><span class="ln"><i style="--i:0;--d:0.0s">Если интересно,</i></span><span class="ln"><i style="--i:1;--d:0.0s">предлагаю <em>созвониться</em></i></span></h2></div>

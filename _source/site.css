@@ -111,6 +111,11 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 .cover .cstage{position:absolute;left:50%;top:50%;width:calc(var(--u)*1920);height:calc(var(--u)*1080);translate:-50% -50%}
 .cover .mast{position:absolute;z-index:1;left:0;right:0;top:calc(var(--u)*70);text-align:center;white-space:nowrap;font:900 calc(var(--u)*300)/.8 var(--cond);letter-spacing:-.012em;text-transform:uppercase}
 .cover .mast span{display:block}
+/* слово поднимается из-под маски построчно: чистая CSS-анимация, без JS и clip-path */
+.cover .mast .ln{overflow:hidden;padding:.12em 0 .06em;margin:-.12em 0 -.06em}
+.cover .mast .ln>i{display:block;font-style:normal;animation:mastUp 1.15s var(--ease) .1s both}
+.cover .mast .ln:nth-child(2)>i{animation-delay:.24s}
+@keyframes mastUp{from{transform:translateY(105%)}to{transform:none}}
 .cover .sub{position:absolute;z-index:3;right:calc(var(--u)*80);top:calc(var(--u)*566);font:900 calc(var(--u)*50)/1 var(--cond);text-transform:uppercase;letter-spacing:.01em;text-align:right}
 .cover .fig{position:absolute;z-index:2;left:50%;bottom:0;height:calc(var(--u)*820);width:auto;translate:-50% 0;display:block;max-width:none}
 .cover .left,.cover .right{position:absolute;z-index:3;bottom:calc(var(--u)*50)}

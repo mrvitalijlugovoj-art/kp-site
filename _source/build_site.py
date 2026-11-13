@@ -112,7 +112,7 @@ counter[0] += 1
 secs.append(f'''<header class="cover" id="top" data-num="01" data-title="Обложка">
 <div class="strip"><span>@lugovoy.vitaliy</span><span>Запуски онлайн-школ · Москва</span></div>
 <div class="cstage">
-<h1 class="mast" {a('mast', 0)}><span>Коммерческое</span><span>предложение</span></h1>
+<h1 class="mast"><span class="ln"><i>Коммерческое</i></span><span class="ln"><i>предложение</i></span></h1>
 <p class="sub" {a('up', .35)}>по запускам от Виталия Лугового</p>
 <img class="fig" src="assets/img/portrait.png" width="541" height="950" alt="Виталий Луговой" {a('z', .25)}>
 <div class="left">
@@ -309,7 +309,6 @@ section('audit', 'Начало работы', f'''
 </div>''', 'audit', '50%', '70%')
 
 section('contact', 'Контакты', f'''
-<div class="ph" aria-hidden="true">{img('p48_X141.jpg')}</div>
 <div class="fin">
   <div class="kicker"><b>Контакты</b></div>
   <div style="margin-top:14px">{hd(['Если интересно,', 'предлагаю <em>созвониться</em>'], 'l')}</div>
