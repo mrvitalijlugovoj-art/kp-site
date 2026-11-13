@@ -312,6 +312,12 @@ a:hover .play{transform:scale(1.08)}
 .me .col .hd{margin:12px 0 clamp(18px,2vw,34px)}
 .me .col{align-self:start}
 @media(max-width:900px){.me .grid{grid-template-columns:1fr}.me .fig{order:3;width:70%;margin:0 auto -64px}}
+/* на телефоне длинные слова заголовков подгоняются под ширину экрана, чтобы последняя буква не обрезалась */
+@media(max-width:900px){
+  .long .hd.xl{font-size:calc((100vw - 2*var(--pad))/6.5)}
+  .case .hd{font-size:min(clamp(46px,6.2vw,128px),calc((100vw - 2*var(--pad))/7.2))}
+  .final .hd.l{font-size:min(clamp(58px,9.4vw,190px),calc((100vw - 2*var(--pad))/5.2))}
+}
 .long .box{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.6vw,28px);margin-top:clamp(30px,4vw,70px)}
 .long .box .card{padding:clamp(22px,2.6vw,48px)}
 .long .box small{display:block;font:700 clamp(12px,.9vw,17px)/1 var(--text);letter-spacing:.07em;text-transform:uppercase;color:var(--hot);margin-bottom:14px}
