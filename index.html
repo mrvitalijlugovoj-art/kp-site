@@ -336,6 +336,22 @@ a:hover .play{transform:scale(1.08)}
 .foot{padding:26px var(--pad) 90px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);font:700 13px/1.3 var(--text);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
 .foot a:hover{color:#fff}
 
+/* маленький золотой сейф в последнем блоке: монетка падает в прорезь на крышке */
+.safe{display:block;width:clamp(112px,10.5vw,176px);height:auto;filter:drop-shadow(0 10px 14px rgba(0,0,0,.55));transition:filter .6s}
+.final .safe{position:absolute;right:var(--pad);bottom:clamp(36px,5vw,90px)}
+.safe .dial{transform-box:fill-box;transform-origin:center;transition:transform 1s var(--ease)}
+.safe.got{animation:safeJolt .55s ease-out;filter:drop-shadow(0 0 18px rgba(255,205,80,.7)) drop-shadow(0 10px 14px rgba(0,0,0,.55))}
+.safe.got .dial{transform:rotate(240deg)}
+@keyframes safeJolt{0%{transform:translateY(0) scale(1)}25%{transform:translateY(3px) scale(1.04,.96)}60%{transform:translateY(-2px) scale(.99,1.02)}100%{transform:none}}
+@media(max-width:900px){.final .safe{position:relative;right:auto;bottom:auto;margin:34px auto 0;width:clamp(120px,36vw,170px)}}
+@media print{.safe{filter:none}}
+
+/* золотая монетка, катящаяся по заголовкам */
+.coin{position:fixed;left:0;top:0;z-index:60;width:clamp(20px,1.9vw,32px);aspect-ratio:1;pointer-events:none;will-change:transform;filter:drop-shadow(0 5px 6px rgba(0,0,0,.55))}
+.coin i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 26%,#fff6c2 0 10%,#f7cd4a 34%,#d49a1f 68%,#8f5d0e 100%);box-shadow:inset 0 0 0 2px #f1bd3c,inset 0 0 0 3.5px rgba(120,76,8,.75),0 0 12px rgba(255,200,70,.35);display:grid;place-items:center}
+.coin i::after{content:"₽";font:900 clamp(11px,1.05vw,18px)/1 var(--cond);color:#8f5d0e;text-shadow:0 1px 0 rgba(255,238,170,.75)}
+@media print{.coin{display:none}}
+@media(prefers-reduced-motion:reduce){.coin{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 </style>
@@ -623,7 +639,27 @@ a:hover .play{transform:scale(1.08)}
   <p class="lead" data-a="up" style="--d:0.3s">Обсудим подробности и&nbsp;посмотрим, подходим&nbsp;ли друг другу.</p>
   <div class="row" data-a="up" style="--d:0.4s"><a class="go" href="https://t.me/vitalijlugovoj" target="_blank" rel="noopener noreferrer">Связаться со мной</a><p>@vitalijlugovoj в Telegram</p></div>
   <div class="soc" data-a="up" style="--d:0.5s"><a class="lk" href="https://t.me/+5BSQKpWBD1Q3OGFi" target="_blank" rel="noopener noreferrer">Канал про запуски</a><a class="lk" href="https://t.me/otzvzapusk" target="_blank" rel="noopener noreferrer">Отзывы</a></div>
-</div></section>
+</div>
+<svg class="safe" viewBox="0 0 170 132" role="img" aria-label="Золотой сейф с монетами">
+<defs>
+<linearGradient id="sgb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe493"/><stop offset=".5" stop-color="#e5ad34"/><stop offset="1" stop-color="#9a6410"/></linearGradient>
+<linearGradient id="sgd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6c850"/><stop offset="1" stop-color="#b9801c"/></linearGradient>
+<radialGradient id="sgc" cx=".32" cy=".26" r=".95"><stop offset="0" stop-color="#fff6c2"/><stop offset=".35" stop-color="#f7cd4a"/><stop offset=".7" stop-color="#d49a1f"/><stop offset="1" stop-color="#8f5d0e"/></radialGradient>
+</defs>
+<ellipse cx="85" cy="125" rx="80" ry="4" fill="rgba(0,0,0,.35)"/>
+<rect x="22" y="112" width="14" height="10" rx="2" fill="#8f5d0e"/><rect x="84" y="112" width="14" height="10" rx="2" fill="#8f5d0e"/>
+<rect x="10" y="17" width="100" height="97" rx="9" fill="url(#sgb)" stroke="#7a4f0a" stroke-width="2"/>
+<rect x="14" y="10" width="92" height="12" rx="5" fill="#f8d36a" stroke="#7a4f0a" stroke-width="2"/>
+<rect x="38" y="13" width="44" height="5" rx="2.5" fill="#2a1a05"/>
+<rect x="22" y="30" width="76" height="72" rx="6" fill="url(#sgd)" stroke="#7a4f0a" stroke-width="2"/>
+<rect x="28" y="36" width="64" height="60" rx="4" fill="none" stroke="#fff0b0" stroke-opacity=".5"/>
+<rect x="17" y="40" width="6" height="11" rx="2" fill="#7a4f0a"/><rect x="17" y="80" width="6" height="11" rx="2" fill="#7a4f0a"/>
+<g class="dial"><circle cx="60" cy="66" r="18" fill="#ebb73f" stroke="#7a4f0a" stroke-width="2"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(0 60 66)"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(45 60 66)"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(90 60 66)"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(135 60 66)"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(180 60 66)"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(225 60 66)"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(270 60 66)"/><line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(315 60 66)"/><circle cx="60" cy="66" r="10" fill="#c78a1e" stroke="#7a4f0a" stroke-width="1.5"/>
+<line x1="60" y1="66" x2="60" y2="57" stroke="#5a3905" stroke-width="2.4" stroke-linecap="round"/><line x1="60" y1="66" x2="67" y2="70" stroke="#5a3905" stroke-width="2.4" stroke-linecap="round"/><line x1="60" y1="66" x2="53" y2="70" stroke="#5a3905" stroke-width="2.4" stroke-linecap="round"/></g>
+<ellipse cx="131" cy="118" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/><ellipse cx="131" cy="114" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/><ellipse cx="131" cy="110" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/><ellipse cx="131" cy="106" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/><ellipse cx="131" cy="102" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/><ellipse cx="153" cy="118" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/><ellipse cx="153" cy="114" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/><ellipse cx="153" cy="110" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/>
+<ellipse cx="142" cy="120" rx="11" ry="3" fill="rgba(0,0,0,.25)"/>
+<g transform="rotate(-18 150 94)"><ellipse cx="150" cy="94" rx="10" ry="10" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1.2"/><text x="150" y="98" text-anchor="middle" font-size="11" font-weight="900" fill="#8f5d0e" font-family="Arial Narrow,Arial,sans-serif">₽</text></g>
+</svg></section>
 </main>
 <footer class="foot"><span>© Виталий Луговой · продюсер запусков</span><span><a href="https://t.me/vitalijlugovoj" target="_blank" rel="noopener noreferrer">Telegram</a> · <a href="https://t.me/+5BSQKpWBD1Q3OGFi" target="_blank" rel="noopener noreferrer">Канал</a></span></footer>
 <script>
@@ -740,6 +776,106 @@ a:hover .play{transform:scale(1.08)}
     if (hasIO) new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) start(); else stop(); }); }, { threshold: .35 }).observe(g);
     W.addEventListener('resize', function () { if (!can()) { stop(); g.style.scrollSnapType = ''; } else if (g.getBoundingClientRect().top < W.innerHeight) start(); });
   });
+
+  /* золотая монетка: катится по буквам заголовка, потом падает на буквы следующего блока.
+     Положение целиком зависит от прокрутки, поэтому при прокрутке вверх она едет обратно */
+  if (!reduce) (function () {
+    var coin = D.createElement('div'); coin.className = 'coin'; coin.setAttribute('aria-hidden', 'true'); coin.innerHTML = '<i></i>';
+    D.body.appendChild(coin);
+    var A = [], r = 13, raf = 0, landed = false, landT = 0;
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function measure() {
+      var sy = W.scrollY || H.scrollTop, vh = W.innerHeight, list = [];
+      r = (coin.offsetWidth || 26) / 2;
+      var heads = [D.querySelector('.cover .mast')].concat($$('.sec .hd'));
+      heads.forEach(function (h) {
+        if (!h) return;
+        var ln = h.querySelector('.ln'); if (!ln) return;
+        var lr = ln.getBoundingClientRect(), it = ln.firstElementChild || ln;
+        var rg = D.createRange(); rg.selectNodeContents(it);
+        var rr = rg.getBoundingClientRect(); if (!rr.width) return;
+        var fs = parseFloat(W.getComputedStyle(h).fontSize) || 100;
+        var isMast = h.classList.contains('mast');
+        list.push({ y: sy + lr.top + fs * (isMast ? .22 : .255), x0: rr.left, x1: rr.right });
+      });
+      list.forEach(function (a, idx) {
+        /* на обложке монетка ждёт на первой букве и падает, как только начнут листать; в остальных блоках катится по заголовку,
+           пока он в кадре (длина пути не больше, чем заголовок успевает проехать по экрану) */
+        a.ws = idx ? a.y - vh * .18 : vh * .55;
+        var w = idx ? clamp((a.x1 - a.x0) * .5, 180, vh * .73 - 80) : 0;
+        a.we = a.ws + w;
+        a.xe = w ? a.x1 - r : a.x0 + r;
+      });
+      /* сейф в последнем блоке: монетка падает в прорезь на его крышке (прорезь на 10% высоты рисунка сверху, по центру корпуса) */
+      var sf = D.querySelector('.safe');
+      if (sf) {
+        var sr = sf.getBoundingClientRect();
+        if (sr.width) {
+          var sx0 = sr.left + sr.width * (60 / 170), sy0 = sy + sr.top + sr.height * (15.5 / 132);
+          var maxS = Math.max(0, H.scrollHeight - vh) + vh * .55;
+          var sa = { safe: true, y: sy0, x0: sx0 - r, x1: sx0 + r, xe: sx0, we: 0 };
+          sa.ws = Math.min(sy0 - vh * .18, maxS - 30);
+          sa.we = sa.ws;
+          list.push(sa);
+        }
+      }
+      /* проверяем порядок: каждому заголовку остаётся своя дорожка до следующей точки */
+      for (var i = list.length - 2; i >= 0; i--) {
+        var nx = list[i + 1];
+        list[i].ws = Math.min(list[i].ws, nx.ws - 120);
+        list[i].we = Math.max(list[i].ws, Math.min(list[i].we, nx.ws - 90));
+        if (list[i].we === list[i].ws) list[i].xe = list[i].x0 + r;
+      }
+      A = list; update();
+    }
+    function update() {
+      raf = 0;
+      var n = A.length; if (!n) return;
+      var sy = W.scrollY || H.scrollTop, s = sy + W.innerHeight * .55;
+      var i = 0; while (i < n - 1 && s >= A[i + 1].ws) i++;
+      var a = A[i], x, yv, deg = 0, sx = 1, roll = (a.xe - (a.x0 + r)) / r * 57.2958;
+      if (s <= a.ws) { x = a.x0 + r; yv = a.y - sy; }
+      else if (s <= a.we) {
+        var t = (s - a.ws) / (a.we - a.ws);
+        x = a.x0 + r + (a.xe - a.x0 - r) * t; yv = a.y - sy;
+        deg = (x - (a.x0 + r)) / r * 57.2958;
+        var k = (s - a.ws) / 170;
+        if (i > 0 && k < 1) yv -= Math.abs(Math.sin(k * Math.PI * 2.5)) * (1 - k) * 20;
+      } else if (i < n - 1) {
+        /* падение считается в координатах экрана: монетка всегда в кадре и ускоряется вниз, а страница уезжает вверх */
+        var b = A[i + 1], u = clamp((s - a.we) / (b.ws - a.we), 0, 1), vh = W.innerHeight;
+        var yl = a.y - (a.we - vh * .55), yd = b.y - (b.ws - vh * .55);
+        var xs = b.x0 + r, e = u * u * (3 - 2 * u);
+        x = a.xe + (xs - a.xe) * e; yv = yl + (yd - yl) * u * u;
+        var degEnd = Math.round((roll + 540) / 360) * 360;
+        deg = roll + (degEnd - roll) * u; sx = Math.cos(u * Math.PI * 4);
+        if (Math.abs(sx) < .12) sx = sx < 0 ? -.12 : .12;
+      } else { x = a.xe; yv = a.y - sy; deg = a.safe ? 0 : roll; }
+      /* прыжок в сейф: после приземления на крышку монетка по времени уходит в прорезь и пропадает, сейф вздрагивает */
+      var sfe = a.safe ? D.querySelector('.safe') : null;
+      if (a.safe && s > a.ws) {
+        if (!landed) { landed = true; landT = performance.now(); }
+        var dp = clamp((performance.now() - landT) / 560, 0, 1), de = dp * dp * (3 - 2 * dp);
+        var drop = de * (2 * r + 8);
+        yv += drop; deg = 0; sx = 1; x = a.xe;
+        coin.style.clipPath = 'inset(0 0 ' + clamp(drop - 1, 0, 2 * r).toFixed(1) + 'px 0)';
+        if (dp < 1) raf = requestAnimationFrame(update);
+        else { coin.style.opacity = '0'; if (sfe) sfe.classList.add('got'); }
+      } else if (landed) {
+        landed = false; coin.style.opacity = ''; coin.style.clipPath = '';
+        var so = D.querySelector('.safe'); if (so) so.classList.remove('got');
+      }
+      coin.style.transform = 'translate3d(' + (x - r).toFixed(1) + 'px,' + (yv - 2 * r - 1).toFixed(1) + 'px,0) rotate(' + deg.toFixed(1) + 'deg) scaleX(' + sx.toFixed(3) + ')';
+    }
+    function req() { if (!raf) raf = requestAnimationFrame(update); }
+    W.addEventListener('scroll', req, { passive: true });
+    W.addEventListener('resize', measure);
+    W.addEventListener('load', measure);
+    [300, 900, 2200, 5000].forEach(function (ms) { setTimeout(measure, ms); });
+    if (D.fonts && D.fonts.ready) D.fonts.ready.then(measure);
+    if ('ResizeObserver' in W) new ResizeObserver(function () { clearTimeout(measure.t); measure.t = setTimeout(measure, 120); }).observe(D.body);
+    measure();
+  })();
 
   var stick = D.querySelector('.stick'), cover = D.querySelector('.cover'), fin = D.getElementById('contact');
   var bigs = $$('.bignum'), ticking = false;

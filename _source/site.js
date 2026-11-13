@@ -112,6 +112,106 @@
     W.addEventListener('resize', function () { if (!can()) { stop(); g.style.scrollSnapType = ''; } else if (g.getBoundingClientRect().top < W.innerHeight) start(); });
   });
 
+  /* золотая монетка: катится по буквам заголовка, потом падает на буквы следующего блока.
+     Положение целиком зависит от прокрутки, поэтому при прокрутке вверх она едет обратно */
+  if (!reduce) (function () {
+    var coin = D.createElement('div'); coin.className = 'coin'; coin.setAttribute('aria-hidden', 'true'); coin.innerHTML = '<i></i>';
+    D.body.appendChild(coin);
+    var A = [], r = 13, raf = 0, landed = false, landT = 0;
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function measure() {
+      var sy = W.scrollY || H.scrollTop, vh = W.innerHeight, list = [];
+      r = (coin.offsetWidth || 26) / 2;
+      var heads = [D.querySelector('.cover .mast')].concat($$('.sec .hd'));
+      heads.forEach(function (h) {
+        if (!h) return;
+        var ln = h.querySelector('.ln'); if (!ln) return;
+        var lr = ln.getBoundingClientRect(), it = ln.firstElementChild || ln;
+        var rg = D.createRange(); rg.selectNodeContents(it);
+        var rr = rg.getBoundingClientRect(); if (!rr.width) return;
+        var fs = parseFloat(W.getComputedStyle(h).fontSize) || 100;
+        var isMast = h.classList.contains('mast');
+        list.push({ y: sy + lr.top + fs * (isMast ? .22 : .255), x0: rr.left, x1: rr.right });
+      });
+      list.forEach(function (a, idx) {
+        /* на обложке монетка ждёт на первой букве и падает, как только начнут листать; в остальных блоках катится по заголовку,
+           пока он в кадре (длина пути не больше, чем заголовок успевает проехать по экрану) */
+        a.ws = idx ? a.y - vh * .18 : vh * .55;
+        var w = idx ? clamp((a.x1 - a.x0) * .5, 180, vh * .73 - 80) : 0;
+        a.we = a.ws + w;
+        a.xe = w ? a.x1 - r : a.x0 + r;
+      });
+      /* сейф в последнем блоке: монетка падает в прорезь на его крышке (прорезь на 10% высоты рисунка сверху, по центру корпуса) */
+      var sf = D.querySelector('.safe');
+      if (sf) {
+        var sr = sf.getBoundingClientRect();
+        if (sr.width) {
+          var sx0 = sr.left + sr.width * (60 / 170), sy0 = sy + sr.top + sr.height * (15.5 / 132);
+          var maxS = Math.max(0, H.scrollHeight - vh) + vh * .55;
+          var sa = { safe: true, y: sy0, x0: sx0 - r, x1: sx0 + r, xe: sx0, we: 0 };
+          sa.ws = Math.min(sy0 - vh * .18, maxS - 30);
+          sa.we = sa.ws;
+          list.push(sa);
+        }
+      }
+      /* проверяем порядок: каждому заголовку остаётся своя дорожка до следующей точки */
+      for (var i = list.length - 2; i >= 0; i--) {
+        var nx = list[i + 1];
+        list[i].ws = Math.min(list[i].ws, nx.ws - 120);
+        list[i].we = Math.max(list[i].ws, Math.min(list[i].we, nx.ws - 90));
+        if (list[i].we === list[i].ws) list[i].xe = list[i].x0 + r;
+      }
+      A = list; update();
+    }
+    function update() {
+      raf = 0;
+      var n = A.length; if (!n) return;
+      var sy = W.scrollY || H.scrollTop, s = sy + W.innerHeight * .55;
+      var i = 0; while (i < n - 1 && s >= A[i + 1].ws) i++;
+      var a = A[i], x, yv, deg = 0, sx = 1, roll = (a.xe - (a.x0 + r)) / r * 57.2958;
+      if (s <= a.ws) { x = a.x0 + r; yv = a.y - sy; }
+      else if (s <= a.we) {
+        var t = (s - a.ws) / (a.we - a.ws);
+        x = a.x0 + r + (a.xe - a.x0 - r) * t; yv = a.y - sy;
+        deg = (x - (a.x0 + r)) / r * 57.2958;
+        var k = (s - a.ws) / 170;
+        if (i > 0 && k < 1) yv -= Math.abs(Math.sin(k * Math.PI * 2.5)) * (1 - k) * 20;
+      } else if (i < n - 1) {
+        /* падение считается в координатах экрана: монетка всегда в кадре и ускоряется вниз, а страница уезжает вверх */
+        var b = A[i + 1], u = clamp((s - a.we) / (b.ws - a.we), 0, 1), vh = W.innerHeight;
+        var yl = a.y - (a.we - vh * .55), yd = b.y - (b.ws - vh * .55);
+        var xs = b.x0 + r, e = u * u * (3 - 2 * u);
+        x = a.xe + (xs - a.xe) * e; yv = yl + (yd - yl) * u * u;
+        var degEnd = Math.round((roll + 540) / 360) * 360;
+        deg = roll + (degEnd - roll) * u; sx = Math.cos(u * Math.PI * 4);
+        if (Math.abs(sx) < .12) sx = sx < 0 ? -.12 : .12;
+      } else { x = a.xe; yv = a.y - sy; deg = a.safe ? 0 : roll; }
+      /* прыжок в сейф: после приземления на крышку монетка по времени уходит в прорезь и пропадает, сейф вздрагивает */
+      var sfe = a.safe ? D.querySelector('.safe') : null;
+      if (a.safe && s > a.ws) {
+        if (!landed) { landed = true; landT = performance.now(); }
+        var dp = clamp((performance.now() - landT) / 560, 0, 1), de = dp * dp * (3 - 2 * dp);
+        var drop = de * (2 * r + 8);
+        yv += drop; deg = 0; sx = 1; x = a.xe;
+        coin.style.clipPath = 'inset(0 0 ' + clamp(drop - 1, 0, 2 * r).toFixed(1) + 'px 0)';
+        if (dp < 1) raf = requestAnimationFrame(update);
+        else { coin.style.opacity = '0'; if (sfe) sfe.classList.add('got'); }
+      } else if (landed) {
+        landed = false; coin.style.opacity = ''; coin.style.clipPath = '';
+        var so = D.querySelector('.safe'); if (so) so.classList.remove('got');
+      }
+      coin.style.transform = 'translate3d(' + (x - r).toFixed(1) + 'px,' + (yv - 2 * r - 1).toFixed(1) + 'px,0) rotate(' + deg.toFixed(1) + 'deg) scaleX(' + sx.toFixed(3) + ')';
+    }
+    function req() { if (!raf) raf = requestAnimationFrame(update); }
+    W.addEventListener('scroll', req, { passive: true });
+    W.addEventListener('resize', measure);
+    W.addEventListener('load', measure);
+    [300, 900, 2200, 5000].forEach(function (ms) { setTimeout(measure, ms); });
+    if (D.fonts && D.fonts.ready) D.fonts.ready.then(measure);
+    if ('ResizeObserver' in W) new ResizeObserver(function () { clearTimeout(measure.t); measure.t = setTimeout(measure, 120); }).observe(D.body);
+    measure();
+  })();
+
   var stick = D.querySelector('.stick'), cover = D.querySelector('.cover'), fin = D.getElementById('contact');
   var bigs = $$('.bignum'), ticking = false;
   function onScroll() {

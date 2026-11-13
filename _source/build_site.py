@@ -90,6 +90,33 @@ cases.append(dict(id='c9', n=9, tag='Личный запуск', lines=['Сво�
                   det='Свой личный запуск на 1 000 000 ₽ за 2 недели: реалити-шоу «Миллионный запуск». Все шаги и воронки — в подробном разборе по ссылке.', did=None,
                   gal=[dict(img=['p32_X86.jpg'], cap='Реалити-шоу «Миллионный запуск»', href='https://teletype.in/@vitaliy.lugovoj/vuhYHM8R_1_', hl='Подробный запуск')]))
 
+# маленький золотой сейф со стопками таких же монет; в прорезь на крышке падает монетка (см. site.js)
+def _stack(cx, base, n):
+    return ''.join('<ellipse cx="%d" cy="%d" rx="11" ry="4" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1"/>' % (cx, base - 4 * k) for k in range(n))
+
+
+_ticks = ''.join('<line x1="60" y1="51" x2="60" y2="54.5" stroke="#7a4f0a" stroke-width="1.6" transform="rotate(%d 60 66)"/>' % (45 * k) for k in range(8))
+SAFE = '''<svg class="safe" viewBox="0 0 170 132" role="img" aria-label="Золотой сейф с монетами">
+<defs>
+<linearGradient id="sgb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe493"/><stop offset=".5" stop-color="#e5ad34"/><stop offset="1" stop-color="#9a6410"/></linearGradient>
+<linearGradient id="sgd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6c850"/><stop offset="1" stop-color="#b9801c"/></linearGradient>
+<radialGradient id="sgc" cx=".32" cy=".26" r=".95"><stop offset="0" stop-color="#fff6c2"/><stop offset=".35" stop-color="#f7cd4a"/><stop offset=".7" stop-color="#d49a1f"/><stop offset="1" stop-color="#8f5d0e"/></radialGradient>
+</defs>
+<ellipse cx="85" cy="125" rx="80" ry="4" fill="rgba(0,0,0,.35)"/>
+<rect x="22" y="112" width="14" height="10" rx="2" fill="#8f5d0e"/><rect x="84" y="112" width="14" height="10" rx="2" fill="#8f5d0e"/>
+<rect x="10" y="17" width="100" height="97" rx="9" fill="url(#sgb)" stroke="#7a4f0a" stroke-width="2"/>
+<rect x="14" y="10" width="92" height="12" rx="5" fill="#f8d36a" stroke="#7a4f0a" stroke-width="2"/>
+<rect x="38" y="13" width="44" height="5" rx="2.5" fill="#2a1a05"/>
+<rect x="22" y="30" width="76" height="72" rx="6" fill="url(#sgd)" stroke="#7a4f0a" stroke-width="2"/>
+<rect x="28" y="36" width="64" height="60" rx="4" fill="none" stroke="#fff0b0" stroke-opacity=".5"/>
+<rect x="17" y="40" width="6" height="11" rx="2" fill="#7a4f0a"/><rect x="17" y="80" width="6" height="11" rx="2" fill="#7a4f0a"/>
+<g class="dial"><circle cx="60" cy="66" r="18" fill="#ebb73f" stroke="#7a4f0a" stroke-width="2"/>''' + _ticks + '''<circle cx="60" cy="66" r="10" fill="#c78a1e" stroke="#7a4f0a" stroke-width="1.5"/>
+<line x1="60" y1="66" x2="60" y2="57" stroke="#5a3905" stroke-width="2.4" stroke-linecap="round"/><line x1="60" y1="66" x2="67" y2="70" stroke="#5a3905" stroke-width="2.4" stroke-linecap="round"/><line x1="60" y1="66" x2="53" y2="70" stroke="#5a3905" stroke-width="2.4" stroke-linecap="round"/></g>
+''' + _stack(131, 118, 5) + _stack(153, 118, 3) + '''
+<ellipse cx="142" cy="120" rx="11" ry="3" fill="rgba(0,0,0,.25)"/>
+<g transform="rotate(-18 150 94)"><ellipse cx="150" cy="94" rx="10" ry="10" fill="url(#sgc)" stroke="#8f5d0e" stroke-width="1.2"/><text x="150" y="98" text-anchor="middle" font-size="11" font-weight="900" fill="#8f5d0e" font-family="Arial Narrow,Arial,sans-serif">₽</text></g>
+</svg>'''
+
 secs = []  # html блоки
 counter = [0]
 
@@ -315,7 +342,8 @@ section('contact', 'Контакты', f'''
   <p class="lead" {a('up', .3)}>Обсудим подробности и&nbsp;посмотрим, подходим&nbsp;ли друг другу.</p>
   <div class="row" {a('up', .4)}>{link(TG, 'Связаться со мной', 'go')}<p>@vitalijlugovoj в Telegram</p></div>
   <div class="soc" {a('up', .5)}>{link(CHANNEL, 'Канал про запуски')}{link(REVIEWS, 'Отзывы')}</div>
-</div>''', 'final', '30%', '70%')
+</div>
+{SAFE}''', 'final', '30%', '70%')
 
 css = open(B + '/site.css', encoding='utf8').read()
 fonts = open(OUT + '/assets/fonts/fonts.css', encoding='utf8').read()
