@@ -131,7 +131,9 @@
         var rr = rg.getBoundingClientRect(); if (!rr.width) return;
         var fs = parseFloat(W.getComputedStyle(h).fontSize) || 100;
         var isMast = h.classList.contains('mast');
-        list.push({ y: sy + lr.top + fs * (isMast ? .22 : .255), x0: rr.left, x1: rr.right });
+        /* слово на обложке сдвинуто параллаксом на 0.3 от прокрутки: вычитаем сдвиг, чтобы якорь монетки не уезжал */
+        var po = isMast ? (parseFloat(h.closest('.cover').style.getPropertyValue('--p')) || 0) * .3 : 0;
+        list.push({ y: sy + lr.top - po + fs * (isMast ? .22 : .255), x0: rr.left, x1: rr.right });
       });
       list.forEach(function (a, idx) {
         /* на обложке монетка ждёт на первой букве и падает, как только начнут листать; в остальных блоках катится по заголовку,
@@ -199,13 +201,27 @@
         yv += drop; deg = 0; sx = 1; x = a.xe;
         coin.style.clipPath = 'inset(-90px -90px ' + clamp(drop - 1, 0, 2 * r).toFixed(1) + 'px -90px)';
         if (dp < 1) raf = requestAnimationFrame(update);
-        else { coin.style.opacity = '0'; if (sfe) sfe.classList.add('got'); }
+        else {
+          coin.style.opacity = '0';
+          if (sfe && !sfe.classList.contains('got')) { sfe.classList.add('got'); popPlus(sfe); }
+        }
       } else if (landed) {
         landed = false; coin.style.opacity = ''; coin.style.clipPath = '';
         var so = D.querySelector('.safe'); if (so) so.classList.remove('got');
       }
       coin.style.setProperty('--g', g.toFixed(3)); coin.style.setProperty('--gl', gl.toFixed(3)); coin.style.setProperty('--sp', sp.toFixed(3));
       coin.style.transform = 'translate3d(' + (x - r).toFixed(1) + 'px,' + (yv - 2 * r - 1).toFixed(1) + 'px,0) rotate(' + deg.toFixed(1) + 'deg) scaleX(' + sx.toFixed(3) + ')';
+    }
+    /* над сейфом после падения монетки всплывает «+1 запуск» и растворяется */
+    function popPlus(sf) {
+      var fin = D.querySelector('.final'); if (!fin) return;
+      var old = fin.querySelector('.safe-plus'); if (old) old.remove();
+      var fr = fin.getBoundingClientRect(), sr = sf.getBoundingClientRect();
+      var el = D.createElement('div'); el.className = 'safe-plus'; el.setAttribute('aria-hidden', 'true'); el.textContent = '+1 запуск';
+      el.style.left = (sr.left - fr.left + sr.width * (60 / 170)).toFixed(1) + 'px';
+      el.style.top = (sr.top - fr.top - 4).toFixed(1) + 'px';
+      fin.appendChild(el);
+      el.addEventListener('animationend', function () { el.remove(); });
     }
     function req() { if (!raf) raf = requestAnimationFrame(update); }
     W.addEventListener('scroll', req, { passive: true });
@@ -224,6 +240,8 @@
     var y = W.scrollY || H.scrollTop, vh = W.innerHeight;
     var max = Math.max(1, H.scrollHeight - vh);
     bar.style.transform = 'scaleX(' + Math.min(1, y / max) + ')';
+    /* параллакс обложки: слово, фото и колонки смещаются с разной скоростью (CSS читает --p) */
+    if (!reduce && y < cover.offsetHeight + 120) cover.style.setProperty('--p', Math.max(0, y).toFixed(1));
     var pastCover = y > cover.offsetHeight * .6;
     vf.classList.toggle('on', pastCover);
     var finTop = fin ? fin.getBoundingClientRect().top : 9e9;
