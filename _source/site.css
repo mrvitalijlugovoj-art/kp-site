@@ -140,7 +140,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
   .cover .fig{position:relative;left:auto;bottom:auto;translate:none;order:4;height:112vw;margin:2vw auto 0;max-width:100%;object-fit:contain}
   .cover .go{position:relative;left:auto;bottom:auto;translate:none;order:5;display:block;text-align:center;margin:-40px var(--pad) 0;font-size:30px;padding:20px 12px 18px}
   .cover .left,.cover .right{position:relative;left:auto;right:auto;bottom:auto;width:auto;margin:30px var(--pad) 0}
-  .cover .left{order:6}.cover .right{order:7}
+  .cover .left,.cover .right{display:none}
   .cover .left p.motto{font-size:19px}
   .cover .left p{font-size:17px}.cover .free{font-size:13px!important}
   .cover .right .line{padding:14px 0}.cover .right .line strong{font-size:36px}.cover .right .line small{font-size:13px}.cover .right .line>span{font-size:16px}
