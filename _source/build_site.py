@@ -17,8 +17,17 @@ def esc(s):
     return html.escape(s, quote=False)
 
 
+RING = {'p12_X42', 'p15_X50', 'p33_X87', 'p33_X88', 'p33_X89', 'p33_X90', 'p33_X91', 'p34_X92', 'p34_X93', 'p34_X94', 'p34_X95', 'p34_X96'}
+
+
+def rn(name):
+    """кружки-отзывы обрезаны по внутреннему краю кольца и лежат под именем *_r.jpg"""
+    base = name[:-4] if name.endswith('.jpg') else name
+    return base + '_r.jpg' if base in RING else name
+
+
 def img_size(path):
-    d = open(path, 'rb').read()
+    d = open(os.path.join(os.path.dirname(path), rn(os.path.basename(path))), 'rb').read()
     if d[:8] == b'\x89PNG\r\n\x1a\n':
         return struct.unpack('>II', d[16:24])
     i = 2
@@ -59,7 +68,7 @@ def money(n):
 
 def img(name, lazy=True, alt='', extra=''):
     w, h = img_size(IMG + name)
-    return '<img src="assets/img/%s" width="%d" height="%d" alt="%s"%s%s>' % (name, w, h, alt, ' loading="lazy" decoding="async"' if lazy else '', extra)
+    return '<img src="assets/img/%s" width="%d" height="%d" alt="%s"%s%s>' % (rn(name), w, h, alt, ' loading="lazy" decoding="async"' if lazy else '', extra)
 
 
 # --- данные из презентации (кейсы и шаги) ---

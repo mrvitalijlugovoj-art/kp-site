@@ -4,6 +4,9 @@
   var $$ = function (s, r) { return [].slice.call((r || D).querySelectorAll(s)); };
   var hasIO = 'IntersectionObserver' in W;
 
+  /* обложка всегда над сгибом: проявляем её сразу, не дожидаясь IntersectionObserver */
+  setTimeout(function () { $$('.cover [data-a]').forEach(function (e) { e.classList.add('in'); setTimeout(function () { e.classList.add('done'); }, 2600); }); }, 80);
+
   /* показать всё сразу, если анимации недоступны */
   if (!hasIO || reduce) {
     $$('[data-a],.hd,.folio,.stp,.path').forEach(function (e) { e.classList.add('in', 'line-in'); });

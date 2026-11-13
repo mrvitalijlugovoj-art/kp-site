@@ -104,8 +104,9 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 
 /* ===== ОБЛОЖКА ===== */
 /* композиция 1920x1080 масштабируется целиком (по ширине или высоте окна) и стоит по центру, как в презентации */
-.cover{--u:min(calc(100vw/1920),calc(100dvh/1080),1.5px);position:relative;isolation:isolate;overflow:hidden;min-height:100dvh;background:radial-gradient(60% 70% at 50% 62%,#3A2A12 0%,#1B140B 45%,#0C0A08 100%)}
+.cover{--u:min(calc(100vw/1920),calc(100vh/1080),1.5px);position:relative;isolation:isolate;overflow:hidden;min-height:100vh;background:radial-gradient(60% 70% at 50% 62%,#3A2A12 0%,#1B140B 45%,#0C0A08 100%)}
 .cover::before,.cover::after{display:none}
+@supports (height:100dvh){.cover{--u:min(calc(100vw/1920),calc(100dvh/1080),1.5px);min-height:100dvh}}
 .cover .strip{position:absolute;z-index:4;left:calc(50% - var(--u)*880);right:calc(50% - var(--u)*880);top:calc(50% - var(--u)*540);height:calc(var(--u)*64);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--rule);font:700 max(11px,calc(var(--u)*20))/1 var(--text);letter-spacing:.04em;text-transform:uppercase}
 .cover .cstage{position:absolute;left:50%;top:50%;width:calc(var(--u)*1920);height:calc(var(--u)*1080);translate:-50% -50%}
 .cover .mast{position:absolute;z-index:1;left:0;right:0;top:calc(var(--u)*70);text-align:center;white-space:nowrap;font:900 calc(var(--u)*300)/.8 var(--cond);letter-spacing:-.012em;text-transform:uppercase}
@@ -202,7 +203,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 .gcard.rev .circ{position:relative;border-radius:50%;overflow:hidden;aspect-ratio:1;width:100%;display:block}
 .gcard.rev .circ img{border-radius:0;object-fit:cover}
 .play{position:absolute;left:50%;top:50%;width:26%;height:26%;margin:-13% 0 0 -13%;border-radius:50%;background:var(--hot);animation:ring 2.2s ease-out infinite;transition:transform .3s var(--ease)}
-.play::after{content:"";position:absolute;left:38%;top:27%;border-left:.9em solid #fff;border-top:.6em solid transparent;border-bottom:.6em solid transparent;font-size:clamp(14px,2.2vw,40px)}
+.play::after{content:"";position:absolute;inset:0;background:#fff;clip-path:polygon(38% 27%,38% 73%,76% 50%)}
 a:hover .play{transform:scale(1.08)}
 @media(max-width:900px){
   .case .ctop{grid-template-columns:1fr}
@@ -295,7 +296,7 @@ a:hover .play{transform:scale(1.08)}
 .audit .ag p{color:var(--soft);font-size:clamp(15px,1.2vw,24px);line-height:1.4}
 @media(max-width:1000px){.audit .ag{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.audit .ag{grid-template-columns:1fr}}
-.final{min-height:min(100dvh,980px);display:flex;flex-direction:column}
+.final{min-height:min(100vh,980px);display:flex;flex-direction:column}
 .final .ph{position:absolute;right:0;top:0;bottom:0;width:min(60%,1000px);z-index:-1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 45%);mask-image:linear-gradient(90deg,transparent,#000 45%)}
 .final .ph img{width:100%;height:100%;object-fit:cover;object-position:center 20%;opacity:.55}
 .final .fin{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1200px}
