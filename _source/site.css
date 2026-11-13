@@ -87,6 +87,9 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 .go{display:inline-block;background:var(--hot);color:#fff;font:900 clamp(28px,2.2vw,42px)/1 var(--cond);letter-spacing:.02em;text-transform:uppercase;padding:.55em 1.1em .5em;white-space:nowrap;transition:transform .2s ease,filter .2s;animation:ring 2.2s ease-out infinite}
 .go:hover{transform:translateY(-3px)}
 .go:active{transform:scale(.985);filter:brightness(.9)}
+/* кнопка с анимацией появления (data-a) после показа должна так же подпрыгивать при наведении: правило появления иначе перебивает :hover */
+.js .go.done:hover,.js .lk.done:hover{transform:translateY(-3px)}
+.js .go.done:active{transform:scale(.985)}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(242,69,28,.55)}100%{box-shadow:0 0 0 20px rgba(242,69,28,0)}}
 .lk{display:inline-flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,.4);border-radius:40px;padding:.7em 1.3em .65em;font:700 clamp(12px,.9vw,17px)/1 var(--text);letter-spacing:.06em;text-transform:uppercase;transition:border-color .3s,background .3s,transform .3s var(--ease)}
 .lk::after{content:"→";color:var(--hot);font-size:1.25em;transition:transform .3s var(--ease)}
