@@ -197,7 +197,7 @@
         var dp = clamp((performance.now() - landT) / 560, 0, 1), de = dp * dp * (3 - 2 * dp);
         var drop = de * (2 * r + 8);
         yv += drop; deg = 0; sx = 1; x = a.xe;
-        coin.style.clipPath = 'inset(0 0 ' + clamp(drop - 1, 0, 2 * r).toFixed(1) + 'px 0)';
+        coin.style.clipPath = 'inset(-90px -90px ' + clamp(drop - 1, 0, 2 * r).toFixed(1) + 'px -90px)';
         if (dp < 1) raf = requestAnimationFrame(update);
         else { coin.style.opacity = '0'; if (sfe) sfe.classList.add('got'); }
       } else if (landed) {

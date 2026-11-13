@@ -330,7 +330,10 @@ a:hover .play{transform:scale(1.08)}
 
 /* золотая монетка, катящаяся по заголовкам */
 .coin{position:fixed;left:0;top:0;z-index:60;width:clamp(20px,1.9vw,32px);aspect-ratio:1;pointer-events:none;will-change:transform;filter:drop-shadow(0 5px 6px rgba(0,0,0,.55))}
-.coin i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 26%,#fff6c2 0 10%,#f7cd4a 34%,#d49a1f 68%,#8f5d0e 100%);box-shadow:inset 0 0 0 2px #f1bd3c,inset 0 0 0 3.5px rgba(120,76,8,.75),0 0 12px rgba(255,200,70,.35);display:grid;place-items:center}
+.coin i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 26%,#fff6c2 0 10%,#f7cd4a 34%,#d49a1f 68%,#8f5d0e 100%);box-shadow:inset 0 0 0 2px #f1bd3c,inset 0 0 0 3.5px rgba(120,76,8,.75),0 0 14px rgba(255,205,80,.55);display:grid;place-items:center}
+/* лёгкое золотое свечение вокруг монетки: мягкий ореол, который чуть «дышит» */
+.coin::before{content:"";position:absolute;inset:-75%;border-radius:50%;background:radial-gradient(circle,rgba(255,216,104,.6) 0,rgba(255,200,72,.26) 36%,rgba(255,190,60,0) 68%);animation:coinGlow 2.4s ease-in-out infinite alternate;pointer-events:none}
+@keyframes coinGlow{from{opacity:.6;transform:scale(.9)}to{opacity:1;transform:scale(1.08)}}
 /* блик: светлая полоса скользит по монетке, сила и положение задаются из JS (--gl, --g) */
 .coin i::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(115deg,transparent 36%,rgba(255,255,255,.95) 50%,transparent 64%);background-size:260% 100%;background-position:calc(var(--g,0)*100%) 0;opacity:var(--gl,0);mix-blend-mode:screen;pointer-events:none}
 /* искорка-звёздочка на краю */
