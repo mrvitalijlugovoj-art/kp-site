@@ -115,7 +115,7 @@
   /* золотая монетка: катится по буквам заголовка, потом падает на буквы следующего блока.
      Положение целиком зависит от прокрутки, поэтому при прокрутке вверх она едет обратно */
   if (!reduce) (function () {
-    var coin = D.createElement('div'); coin.className = 'coin'; coin.setAttribute('aria-hidden', 'true'); coin.innerHTML = '<i></i>';
+    var coin = D.createElement('div'); coin.className = 'coin'; coin.setAttribute('aria-hidden', 'true'); coin.innerHTML = '<i></i><b></b>';
     D.body.appendChild(coin);
     var A = [], r = 13, raf = 0, landed = false, landT = 0;
     function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
@@ -168,12 +168,14 @@
       var n = A.length; if (!n) return;
       var sy = W.scrollY || H.scrollTop, s = sy + W.innerHeight * .55;
       var i = 0; while (i < n - 1 && s >= A[i + 1].ws) i++;
+      var gl = 0, g = 0, sp = 0;   /* блик: положение, сила и искорка */
       var a = A[i], x, yv, deg = 0, sx = 1, roll = (a.xe - (a.x0 + r)) / r * 57.2958;
       if (s <= a.ws) { x = a.x0 + r; yv = a.y - sy; }
       else if (s <= a.we) {
         var t = (s - a.ws) / (a.we - a.ws);
         x = a.x0 + r + (a.xe - a.x0 - r) * t; yv = a.y - sy;
         deg = (x - (a.x0 + r)) / r * 57.2958;
+        gl = .3 * (.5 + .5 * Math.sin(t * Math.PI * 4)); g = (t * 2.2) % 1;
         var k = (s - a.ws) / 170;
         if (i > 0 && k < 1) yv -= Math.abs(Math.sin(k * Math.PI * 2.5)) * (1 - k) * 20;
       } else if (i < n - 1) {
@@ -184,6 +186,8 @@
         x = a.xe + (xs - a.xe) * e; yv = yl + (yd - yl) * u * u;
         var degEnd = Math.round((roll + 540) / 360) * 360;
         deg = roll + (degEnd - roll) * u; sx = Math.cos(u * Math.PI * 4);
+        /* в полёте монетка слегка блестит: по грани скользит блик, а на гребне полёта вспыхивает искорка */
+        gl = .85 * Math.sin(u * Math.PI); g = (u * 2.4) % 1; sp = Math.max(0, Math.sin(u * Math.PI * 6)) * Math.sin(u * Math.PI);
         if (Math.abs(sx) < .12) sx = sx < 0 ? -.12 : .12;
       } else { x = a.xe; yv = a.y - sy; deg = a.safe ? 0 : roll; }
       /* прыжок в сейф: после приземления на крышку монетка по времени уходит в прорезь и пропадает, сейф вздрагивает */
@@ -200,6 +204,7 @@
         landed = false; coin.style.opacity = ''; coin.style.clipPath = '';
         var so = D.querySelector('.safe'); if (so) so.classList.remove('got');
       }
+      coin.style.setProperty('--g', g.toFixed(3)); coin.style.setProperty('--gl', gl.toFixed(3)); coin.style.setProperty('--sp', sp.toFixed(3));
       coin.style.transform = 'translate3d(' + (x - r).toFixed(1) + 'px,' + (yv - 2 * r - 1).toFixed(1) + 'px,0) rotate(' + deg.toFixed(1) + 'deg) scaleX(' + sx.toFixed(3) + ')';
     }
     function req() { if (!raf) raf = requestAnimationFrame(update); }
