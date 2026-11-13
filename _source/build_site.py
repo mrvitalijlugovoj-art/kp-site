@@ -314,7 +314,7 @@ section('contact', 'Контакты', f'''
   <div style="margin-top:14px">{hd(['Если интересно,', 'предлагаю <em>созвониться</em>'], 'l')}</div>
   <p class="lead" {a('up', .3)}>Обсудим подробности и&nbsp;посмотрим, подходим&nbsp;ли друг другу.</p>
   <div class="row" {a('up', .4)}>{link(TG, 'Связаться со мной', 'go')}<p>@vitalijlugovoj в Telegram</p></div>
-  <div class="soc" {a('up', .5)}>{link(CHANNEL, 'Канал про запуски')}{link(REVIEWS, 'Отзывы')}{link('https://teletype.in/@vitaliy.lugovoj/vuhYHM8R_1_', 'Личный запуск на 1 млн')}</div>
+  <div class="soc" {a('up', .5)}>{link(CHANNEL, 'Канал про запуски')}{link(REVIEWS, 'Отзывы')}</div>
 </div>''', 'final', '30%', '70%')
 
 css = open(B + '/site.css', encoding='utf8').read()
