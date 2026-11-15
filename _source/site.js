@@ -203,7 +203,7 @@
         if (dp < 1) raf = requestAnimationFrame(update);
         else {
           coin.style.opacity = '0';
-          if (sfe && !sfe.classList.contains('got')) { sfe.classList.add('got'); popPlus(sfe); }
+          if (sfe) sfe.classList.add('got');
         }
       } else if (landed) {
         landed = false; coin.style.opacity = ''; coin.style.clipPath = '';
@@ -211,17 +211,6 @@
       }
       coin.style.setProperty('--g', g.toFixed(3)); coin.style.setProperty('--gl', gl.toFixed(3)); coin.style.setProperty('--sp', sp.toFixed(3));
       coin.style.transform = 'translate3d(' + (x - r).toFixed(1) + 'px,' + (yv - 2 * r - 1).toFixed(1) + 'px,0) rotate(' + deg.toFixed(1) + 'deg) scaleX(' + sx.toFixed(3) + ')';
-    }
-    /* над сейфом после падения монетки всплывает «+1 запуск» и растворяется */
-    function popPlus(sf) {
-      var fin = D.querySelector('.final'); if (!fin) return;
-      var old = fin.querySelector('.safe-plus'); if (old) old.remove();
-      var fr = fin.getBoundingClientRect(), sr = sf.getBoundingClientRect();
-      var el = D.createElement('div'); el.className = 'safe-plus'; el.setAttribute('aria-hidden', 'true'); el.textContent = '+1 запуск';
-      el.style.left = (sr.left - fr.left + sr.width * (60 / 170)).toFixed(1) + 'px';
-      el.style.top = (sr.top - fr.top - 4).toFixed(1) + 'px';
-      fin.appendChild(el);
-      el.addEventListener('animationend', function () { el.remove(); });
     }
     function req() { if (!raf) raf = requestAnimationFrame(update); }
     W.addEventListener('scroll', req, { passive: true });
